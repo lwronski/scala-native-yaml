@@ -30,9 +30,29 @@ object Main extends App {
        |    image: "redis:alpine"
        |""".stripMargin
 
+   val data = Compose(
+    version = "3.9",
+    services = Services(
+      web = Web(
+        build = ".",
+        ports = List("5000:5000"),
+        volumes = List(".:/code", "logvolume01:/var/log")
+      ),
+      redis = Redis(
+        image = "redis:alpine"
+      )
+    )
+  )
+
   time {
-    for(i <- 1 to 100000) {
+    for(i <- 1 to 1000000) {
       yamlString.as[Compose].getOrElse(???)
+    }
+  }
+
+  time {
+    for(i <- 1 to 1000000) {
+      data.asYaml
     }
   }
 }
